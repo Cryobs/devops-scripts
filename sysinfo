@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Script that shows system data 
+# -----------------------------
+# Script from lesson - "Working with hardware in Linux"
+# Themes:
+# - udev
+# - sysfs
+# - devfs
+# - procfs
+
+echo "CPU info:"
+cat /proc/cpuinfo | grep 'model name' | uniq
+
+echo -e "\nMemory info:"
+grep MemTotal /proc/meminfo
+
+echo -e "\nBlock devices:"
+lsblk
+
+echo -e "\nMounted filesystems:"
+cat /proc/mounts
+
+echo -e "\nDevices in /dev:"
+ls /dev | head -n 10
+
+echo -e "\nSysfs - list block devuces:"
+ls /sys/block/
