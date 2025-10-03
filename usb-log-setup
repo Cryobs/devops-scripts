@@ -1,0 +1,24 @@
+#!/bin/sh
+# Script that logging plugged/unplugged USB disks
+# by udev rule "99-usb-log.rules"
+
+
+cat <<EOF | sudo tee /etc/udev/rules.d/99-usb-log.rules > /dev/null
+# Plug check USB-disk
+SUBSYSTEM=="block", \
+ACTION=="add", \
+ENV{DEVTYPE}=="disk", \
+ENV{ID_BUS}=="usb", \
+RUN+="/usr/bin/logger USB disk plugged in: %k"
+
+# Unplug check USB-disk
+SUBSYSTEM=="block", \
+ACTION=="remove", \
+ENV{DEVTYPE}=="disk", \
+ENV{ID_BUS}=="usb", \
+RUN+="/usr/bin/logger USB disk unplugged: %k"
+EOF
+
+sudo udevadm control --reload
+sudo udevadm trigger
+
