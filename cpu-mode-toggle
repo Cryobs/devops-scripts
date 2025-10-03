@@ -1,0 +1,18 @@
+#!/bin/sh
+
+echo -n "from: "
+cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+
+POLITIC=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
+
+echo -n "to:   "
+
+if [ "$POLITIC" = "performance" ]; then
+  echo powersave | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+elif [ "$POLITIC" = "powersave" ]; then
+  echo performance | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+#elif [ "$POLITIC" = "ondemand" ]; then
+#  echo performance | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+else
+  echo "Current governor is '$POLITIC', no changes made."
+fi
