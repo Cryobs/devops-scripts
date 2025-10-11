@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# Script that remove LVM sandbox environment
+# ------------------------------------------
+# Script from lesson - "Disks in Linux"
+# Themes:
+# - LVM
+# - PV
+# - VG
+# - LV
+# - loopback
+
+echo "Removing LVs..."
+sudo lvremove /dev/vg-sand/first
+sudo lvremove /dev/vg-sand/second
+
+echo "Removing VG..."
+sudo vgremove vg-sand
+
+echo "Removing PVs..."
+sudo pvremove /dev/loop0
+sudo pvremove /dev/loop1
+sudo pvremove /dev/loop2
+sudo pvremove /dev/loop3
+
+echo "Removing Loopbacks..."
+sudo losetup -d /dev/loop0
+sudo losetup -d /dev/loop1
+sudo losetup -d /dev/loop2
+sudo losetup -d /dev/loop3
+
+echo "Removing loop-files..."
+sudo rm -rf ~/lvm-sandbox
+
+echo "Done!"
+

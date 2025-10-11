@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# Script that toggle CPU governors
+# ------------------------------------------
+# Script from lesson - "Harware in Linux"
+# Themes:
+# - udev
+# - sysfs
+
+
 echo -n "from: "
 cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 

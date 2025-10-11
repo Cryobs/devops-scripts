@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# Script that create LVM sandbox environment
+# ------------------------------------------
+# Script from lesson - "Disks in Linux"
+# Themes:
+# - LVM
+# - PV
+# - VG
+# - LV
+# - loopback
+
+
+echo "Creating sandbox directory..."
+sudo mkdir $HOME/lvm-sandbox
+
+echo "Creating drives..."
+sudo dd if=/dev/zero of=$HOME/lvm-sandbox/d01 count=1 bs=1G
+sudo dd if=/dev/zero of=$HOME/lvm-sandbox/d02 count=1 bs=1G
+sudo dd if=/dev/zero of=$HOME/lvm-sandbox/d03 count=1 bs=1G
+sudo dd if=/dev/zero of=$HOME/lvm-sandbox/d04 count=1 bs=1G
+
+echo "Creating loopback devices..."
+sudo losetup -f --show $HOME/lvm-sandbox/d01
+sudo losetup -f --show $HOME/lvm-sandbox/d02
+sudo losetup -f --show $HOME/lvm-sandbox/d03
+sudo losetup -f --show $HOME/lvm-sandbox/d04
+
+
+# LVM
+echo "Creating PV..."
+sudo pvcreate /dev/loop0
+sudo pvcreate /dev/loop1
+sudo pvcreate /dev/loop2
+sudo pvcreate /dev/loop3
+
+echo "Creating VG..."
+sudo vgcreate vg-sand /dev/loop0 /dev/loop1 /dev/loop2 /dev/loop3
+
+echo "Creating LV..."
+sudo lvcreate --name first -L 2G vg-sand
+sudo lvcreate --name second -L 400M vg-sand
+
+echo "Done!"

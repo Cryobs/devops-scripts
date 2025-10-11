@@ -1,6 +1,13 @@
 #!/bin/sh
+
 # Script that logging plugged/unplugged USB disks
 # by udev rule "99-usb-log.rules"
+# -----------------------------------------------
+# Script from lesson - "Hardware in Linux"
+# Themes:
+# - udev
+# - udev rules
+# - logger
 
 
 cat <<EOF | sudo tee /etc/udev/rules.d/99-usb-log.rules > /dev/null
