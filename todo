@@ -1,0 +1,7 @@
+LVM
+1. Snapshot rotation (save only 3 last snapshots)
+2. Snapshot backup script (rsync, tar)
+3. Snapshot rollback 
+    - create snapshot
+    - do some stuff
+    - if fail rollback
