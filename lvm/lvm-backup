@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# Script that backups LVM Logic Volume
+# Usage:
+#   lvm-backup <lv>
+# ------------------------------------------
+# Script from lesson - "Disks in Linux"
+# Themes:
+# - LVM
+# - Snapshots
+# - LV
+# - VG
+
+
+
+lv=$1
+lv_size=$(sudo lvs --noheadings -o lv_size --units g --nosuffix $lv | tr -d ' ')
+
+vg=$(sudo lvs --noheadings -o vg_name $lv | tr -d ' ')
+
+backup_dir="/backup/mydata"
+mount_dir="/mnt/lv_backup"
+
+echo "Creating snapshot..."
+sudo lvcreate -L $lv_size --snapshot -n lv_backup $lv
+
+echo "Mounting snapshot..."
+sudo mkdir -p $mount_dir
+sudo mount /dev/$vg/lv_backup $mount_dir
+
+echo "Copying data..."
+sudo mkdir -p $backup_dir
+sudo rsync -a $mount_dir $backup_dir
+
+
+echo "Delete snapshot..."
+sudo umount $mount_dir
+sudo lvremove -y /dev/$vg/lv_backup
+
+

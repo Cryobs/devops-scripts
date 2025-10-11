@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Script that recover data from backup
+# Usage:
+#   lvm-recover <mount> <backup>
+
+
+mount=$1
+backup=$2
+
+sudo rsync -a --delete -P $backup/ $mount/
+
+
